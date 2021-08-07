@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:9
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: passwordSafe
+    ports:
+      - "5432:5432"
