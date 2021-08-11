@@ -1,7 +1,8 @@
 package com.gabrielle.passwordSafe.users.repositories;
 
+import com.gabrielle.passwordSafe.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface IUserRepository extends JpaRepository<User, Long> {
 
 }

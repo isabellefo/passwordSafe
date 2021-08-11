@@ -1,4 +1,6 @@
-package com.gabrielle.passwordSafe.users;
+package com.gabrielle.passwordSafe.users.controllers;
+
+import com.gabrielle.passwordSafe.users.User;
 
 public class UserDTO {
     public final String name;

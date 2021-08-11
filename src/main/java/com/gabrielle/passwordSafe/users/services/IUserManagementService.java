@@ -1,6 +1,8 @@
-package com.gabrielle.passwordSafe.users;
+package com.gabrielle.passwordSafe.users.services;
+
+import com.gabrielle.passwordSafe.users.User;
 
 public interface IUserManagementService {
-    int createUser(User user);
+    Long createUser(User user);
 }
 

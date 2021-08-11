@@ -3,9 +3,17 @@ start() {
 }
 
 upDB() {
-    docker-compose up -d
+    docker-compose up $@
 }
 
 downDB() {
-    docker-compose down
+    docker-compose down $@
+}
+
+shellDB() {
+    docker exec -it passwordSafeDB /bin/bash
+}
+
+psqlDB() {
+    docker exec -it passwordSafeDB /usr/bin/psql -U postgres -d passwordSafe -W 
 }
