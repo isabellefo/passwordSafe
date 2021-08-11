@@ -13,6 +13,6 @@ public class UserDTO {
         this.master_password = master_password;
     }
     public static UserDTO create(User user) {
-        return new UserDTO(user.getName(), user.getEmail(), user.getMaster_password());
+        return new UserDTO(user.getName(), user.getEmail(), user.getMasterPassword());
     }
 }

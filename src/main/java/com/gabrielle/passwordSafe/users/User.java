@@ -1,27 +1,38 @@
 package com.gabrielle.passwordSafe.users;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column
     private String name;
 
     @Column
     private String email;
 
-    @Column
-    private String master_password;
+    @Column(name = "master_password")
+    private String masterPassword;
 
-    public User(String name,String  email,String  master_password) {
+    public User() {}
+
+    public User(String name,String  email,String  masterPassword) {
         this.name = name;
         this.email = email;
-        this.master_password = master_password;
+        this.masterPassword = masterPassword;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,11 +51,11 @@ public class User {
         this.email = email;
     }
 
-    public String getMaster_password() {
-        return master_password;
+    public String getMasterPassword() {
+        return masterPassword;
     }
 
-    public void setMaster_password(String master_password) {
-        this.master_password = master_password;
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
     }
 }
