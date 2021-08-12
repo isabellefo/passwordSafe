@@ -10,6 +10,11 @@ downDB() {
     docker-compose down $@
 }
 
+resetDB() {
+    downDB
+    upDB $@
+}
+
 shellDB() {
     docker exec -it passwordSafeDB /bin/bash
 }
