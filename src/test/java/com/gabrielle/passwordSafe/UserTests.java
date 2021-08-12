@@ -1,7 +1,5 @@
 package com.gabrielle.passwordSafe;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.controllers.UserDTO;
 import com.gabrielle.passwordSafe.users.controllers.UsersController;
@@ -14,6 +12,8 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -30,12 +30,24 @@ public class UserTests {
     void contextLoads() {}
 
     @Test
-    void  testUserCreation() {
+    void  testUserCreationSuccess() {
         User user = getTestUser();
         ResponseEntity<Integer> response = usersController.saveUser(user);
         Integer savedUserId = response.getBody();
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-        assertEquals(savedUserId, 1);
+        var isValidId = savedUserId > 0;
+        assertTrue(isValidId);
+    }
+
+    @Test
+    void testUserCreationFails() {
+        User user = getTestUser();
+        user.setEmail("other@email.com");
+        var firstResp = usersController.saveUser(user);
+        assertEquals(firstResp.getStatusCode(), HttpStatus.CREATED);
+        var secondResp = usersController.saveUser(user);
+        assertEquals(secondResp.getStatusCode(), HttpStatus.BAD_REQUEST);
+        assertEquals(secondResp.getBody(),-1);
     }
 
     @Test

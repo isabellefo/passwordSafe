@@ -8,25 +8,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 @RestController
 @RequestMapping(value = "/users")
 @CrossOrigin
 public class UsersController {
     @Autowired
     IUserManagementService userManagementService;
-    @GetMapping
-    public ResponseEntity<String> home() {
-       return new ResponseEntity("hello", HttpStatus.OK);
-    }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     public ResponseEntity<Integer> saveUser(@RequestBody User user) {
         Integer userId = userManagementService.createUser(user);
-
-        return new ResponseEntity(userId, HttpStatus.CREATED);
+        if (userId > 0) {
+            return new ResponseEntity(userId, HttpStatus.CREATED);
+        }
+        return new ResponseEntity(-1, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping(value = "/{userId}", produces = "application/json")
     public ResponseEntity<UserDTO> findUser(@PathVariable() Integer userId) {
         User user = userManagementService.findUser(userId);
 

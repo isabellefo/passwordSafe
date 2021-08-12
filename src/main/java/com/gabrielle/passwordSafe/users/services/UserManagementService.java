@@ -19,10 +19,16 @@ public class UserManagementService implements IUserManagementService {
     @Transactional
     @Override
     public Integer createUser(User user) {
-        System.out.println(user.getName());
-        System.out.println(user.getId());
+        boolean userExists = isUserRegistered(user);
+        if(userExists) {
+            return -1;
+        }
         user = userRepository.save(user);
         return user.getId();
+    }
+
+    private boolean isUserRegistered(User userToBeSaved) {
+        return userRepository.findByEmail(userToBeSaved.getEmail()) != null;
     }
 
     @Override

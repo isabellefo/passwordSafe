@@ -7,16 +7,17 @@ import javax.persistence.*;
 @Table(name="users")
 public class User {
     @Id
+    @Column(name = "usr_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(name = "usr_name")
     private String name;
 
-    @Column
+    @Column(name = "usr_email")
     private String email;
 
-    @Column(name = "master_password")
+    @Column(name = "usr_master_password")
     private String masterPassword;
 
     public User() {}
