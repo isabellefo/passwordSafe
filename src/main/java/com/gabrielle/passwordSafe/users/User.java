@@ -59,4 +59,8 @@ public class User {
     public void setMasterPassword(String masterPassword) {
         this.masterPassword = masterPassword;
     }
+
+    public boolean isValid() {
+        return name != null && email != null && masterPassword != null;
+    }
 }

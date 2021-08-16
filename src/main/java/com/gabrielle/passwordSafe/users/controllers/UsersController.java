@@ -19,13 +19,13 @@ public class UsersController {
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<Integer> saveUser(@RequestBody User user) {
+
         Integer userId = userManagementService.createUser(user);
         if (userId > 0) {
             return new ResponseEntity(userId, HttpStatus.CREATED);
         }
         return new ResponseEntity(-1, HttpStatus.BAD_REQUEST);
     }
-
     @GetMapping(value = "/{userId}", produces = "application/json")
     public ResponseEntity<UserDTO> findUser(@PathVariable() Integer userId) {
         User user = userManagementService.findUser(userId);

@@ -20,7 +20,7 @@ public class UserManagementService implements IUserManagementService {
     @Override
     public Integer createUser(User user) {
         boolean userExists = isUserRegistered(user);
-        if(userExists) {
+        if(userExists || !user.isValid()) {
             return -1;
         }
         user = userRepository.save(user);

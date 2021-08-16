@@ -53,10 +53,21 @@ public class UserTests {
     @Test
     void testUserRetrieval() {
         User user = getTestUser();
-        usersController.saveUser(user);
-
+        var save = usersController.saveUser(user);
+        assertTrue(save.getBody() > 0);
         ResponseEntity<UserDTO> res = usersController.findUser(user.getId());
         UserDTO userDTO = res.getBody();
         assertEquals(userDTO.name, user.getName());
+    }
+
+    @Test
+    void testInvalidUser() {
+        User user = getTestUser();
+        user.setEmail(null);
+        user.setName(null);
+        user.setMasterPassword(null);
+        var res = usersController.saveUser(user);
+        assertEquals(res.getStatusCode(), HttpStatus.BAD_REQUEST);
+        assertEquals(res.getBody(), -1);
     }
 }
