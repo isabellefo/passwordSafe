@@ -1,3 +1,4 @@
+drop table if exists users;
 create table users (
     usr_id serial primary key,
     usr_name varchar(255) not null,
@@ -6,6 +7,9 @@ create table users (
     constraint UQ_USERS_EMAIL unique (usr_email)
 );
 
+insert into users values (1, "Samuel", "samuel@email.com", "123456");
+
+drop table if exists password;
 create table password (
     pwd_id serial primary key,
     pwd_name varchar(63) not null,
