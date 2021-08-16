@@ -1,9 +1,24 @@
-# PASSWORDSAFE
-Example spring +postgres aplication
+# PASSWORD SAFE
+Example spring +postgres application
 
 # SCRIPTS
-run source cli.sh. Then run funcitons as commands
+run source cli.sh. Then run functions as commands
+
+# ENV VARIABLES
+Required environment variables:
+```sh
+DATABASE_URL=postgresql://localhost:5430/passwordSafe
+```
+
+# DEPLOY
+Steps to deploy a new version of the application(login as coastgabrielle@gmail.com)
+```sh
+heroku login 
+git push master heroku
+```
 
 #DB
-run the docker-compose to init-db
+run the docker-compose to init db
+
+
 
