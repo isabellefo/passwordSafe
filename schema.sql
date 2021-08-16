@@ -7,7 +7,7 @@ create table users (
     constraint UQ_USERS_EMAIL unique (usr_email)
 );
 
-insert into users values (1, "Samuel", "samuel@email.com", "123456");
+insert into users values (1, 'Samuel', 'samuel@email.com', '123456');
 
 drop table if exists password;
 create table password (
