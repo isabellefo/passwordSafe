@@ -14,5 +14,7 @@ create table password (
     pwd_id serial primary key,
     pwd_name varchar(63) not null,
     pwd_password varchar(63) not null,
-    usr_id int not null
+   CONSTRAINT fk_user
+   	FOREIGN KEY(usr_id) 
+		REFERENCES users(usr_id)
 );
