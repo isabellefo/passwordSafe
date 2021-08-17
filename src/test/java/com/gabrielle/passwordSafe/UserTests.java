@@ -35,7 +35,7 @@ public class UserTests {
         ResponseEntity<Integer> response = usersController.saveUser(user);
         Integer savedUserId = response.getBody();
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-        var isValidId = savedUserId > 0;
+        boolean isValidId = savedUserId > 0;
         assertTrue(isValidId);
     }
 
@@ -43,9 +43,9 @@ public class UserTests {
     void testUserCreationFails() {
         User user = getTestUser();
         user.setEmail("other@email.com");
-        var firstResp = usersController.saveUser(user);
+        ResponseEntity<Integer> firstResp = usersController.saveUser(user);
         assertEquals(firstResp.getStatusCode(), HttpStatus.CREATED);
-        var secondResp = usersController.saveUser(user);
+        ResponseEntity<Integer> secondResp = usersController.saveUser(user);
         assertEquals(secondResp.getStatusCode(), HttpStatus.BAD_REQUEST);
         assertEquals(secondResp.getBody(),-1);
     }
@@ -53,7 +53,7 @@ public class UserTests {
     @Test
     void testUserRetrieval() {
         User user = getTestUser();
-        var save = usersController.saveUser(user);
+        ResponseEntity<Integer> save = usersController.saveUser(user);
         assertTrue(save.getBody() > 0);
         ResponseEntity<UserDTO> res = usersController.findUser(user.getId());
         UserDTO userDTO = res.getBody();
@@ -66,7 +66,7 @@ public class UserTests {
         user.setEmail(null);
         user.setName(null);
         user.setMasterPassword(null);
-        var res = usersController.saveUser(user);
+        ResponseEntity<Integer> res = usersController.saveUser(user);
         assertEquals(res.getStatusCode(), HttpStatus.BAD_REQUEST);
         assertEquals(res.getBody(), -1);
     }
