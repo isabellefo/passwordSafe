@@ -1,7 +1,11 @@
 package com.gabrielle.passwordSafe.users;
 
 
+import java.util.Set;
+
 import javax.persistence.*;
+
+import com.gabrielle.passwordSafe.passwords.Password;
 
 @Entity
 @Table(name="users")
@@ -19,7 +23,7 @@ public class User {
 
     @Column(name = "usr_master_password")
     private String masterPassword;
-
+    
     public User() {}
 
     public User(String name,String  email,String  masterPassword) {
