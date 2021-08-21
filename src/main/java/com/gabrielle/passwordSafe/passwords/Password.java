@@ -12,7 +12,7 @@ public class Password {
 	@Id
     @Column(name = "pwd_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
 	@Column(name = "pwd_name")
     private String name;
@@ -27,17 +27,18 @@ public class Password {
     
     public Password() {}
     
-    public Password(String name,String  password) {
+    public Password(String name,String  password, User user) {
         this.name = name;
         this.password = password;
+        this.user = user;
     }
     
     public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -55,7 +56,6 @@ public class Password {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	
     public User getUser() {
 		return user;
