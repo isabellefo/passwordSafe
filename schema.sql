@@ -7,14 +7,14 @@ create table users (
     constraint UQ_USERS_EMAIL unique (usr_email)
 );
 
-insert into users values (1, 'Samuel', 'samuel@email.com', '123456');
+-- masterPassword = 123456
+insert into users values (1, 'Samuel', 'samuel@email.com', '$2a$10$bdszONkWGzLw733tIwwIeOgjL4uoEi1z37IMszOotRZHPoSs7hCr.');
 
 drop table if exists password;
 create table password (
     pwd_id serial primary key,
     pwd_name varchar(63) not null,
     pwd_password varchar(63) not null,
-   CONSTRAINT fk_user
-   	FOREIGN KEY(usr_id) 
-		REFERENCES users(usr_id)
+    usr_id int not null,
+    CONSTRAINT fk_user FOREIGN KEY(usr_id) REFERENCES users(usr_id)
 );
