@@ -12,11 +12,8 @@ public class Password {
 	@Id
     @Column(name = "pwd_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD
-    private Integer Id;
-=======
+
     private Integer id;
->>>>>>> 43f5f96c4f8f3dac0af4027a4952b760299da995
 
 	@Column(name = "pwd_name")
     private String name;
@@ -62,10 +59,6 @@ public class Password {
 		this.password = password;
 	}
 	
-<<<<<<< HEAD
-	
-=======
->>>>>>> 43f5f96c4f8f3dac0af4027a4952b760299da995
     public User getUser() {
 		return user;
 	}
