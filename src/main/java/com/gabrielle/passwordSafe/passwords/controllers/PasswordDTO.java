@@ -9,7 +9,7 @@ public class PasswordDTO {
     public final String password;
     public final User user;
 	
-    private PasswordDTO(String name,String  password, User user) {
+    private PasswordDTO(String name, String password, User user) {
         this.name = name;
         this.password = password;
         this.user = user;

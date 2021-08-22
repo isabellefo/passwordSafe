@@ -3,16 +3,10 @@ package com.gabrielle.passwordSafe.passwords.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
-import com.gabrielle.passwordSafe.users.controllers.UserDTO;
 
 @RestController
 @RequestMapping(value = "/password")
@@ -23,7 +17,7 @@ public class PasswordController {
 	IPasswordManagementService passwordService;
 	
 	@PostMapping(produces = "application/json")
-	public ResponseEntity<Integer> saveUser(@RequestBody Password password) {
+	public ResponseEntity<Integer> savePassword(@RequestBody Password password) {
 
         Integer passwordId = passwordService.createPassword(password);
         if (passwordId > 0) {
@@ -33,8 +27,12 @@ public class PasswordController {
     }
 	
     @GetMapping(value = "/{passwordId}", produces = "application/json")
-    public ResponseEntity<UserDTO> findPassword(Integer passwordId) {
-        Password password= passwordService.findPassword(passwordId);
+    public ResponseEntity<PasswordDTO> findPassword(@PathVariable() Integer passwordId) {
+        Password password = passwordService.findPassword(passwordId);
+        if(password == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
         return new ResponseEntity(PasswordDTO.create(password), HttpStatus.OK);
     }
 	
