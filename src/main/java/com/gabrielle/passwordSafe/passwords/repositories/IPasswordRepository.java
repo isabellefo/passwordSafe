@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.gabrielle.passwordSafe.passwords.Password;
 
-
 public interface IPasswordRepository extends JpaRepository<Password, Long> {
     Password findById(Integer id);
-    List<Password> findByUserEmailOrName(String email, String name);
+    Password findByName(String name);
+    List<Password> findByUserId(Integer userId);
 }

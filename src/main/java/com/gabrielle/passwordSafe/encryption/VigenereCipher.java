@@ -1,4 +1,4 @@
-package com.gabrielle.passwordSafe.security.services;
+package com.gabrielle.passwordSafe.encryption;
 
 // http://www.facom.ufu.br/~albertini/1sem2017/infosec/Vigenere.java
 

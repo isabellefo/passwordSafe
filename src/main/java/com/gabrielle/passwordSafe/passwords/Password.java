@@ -6,13 +6,12 @@ import com.gabrielle.passwordSafe.users.User;
 
 
 @Entity
-@Table(name="password")
+@Table(name="passwords")
 public class Password {
 	
 	@Id
     @Column(name = "pwd_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
 
 	@Column(name = "pwd_name")
@@ -20,7 +19,10 @@ public class Password {
     
     @Column(name = "pwd_password")
     private String password;
-    
+
+	@Column(name = "usr_id", insertable = false, updatable = false)
+    private Integer userId;
+
     @ManyToOne
     @JoinColumn(name = "usr_id")
     private User user;
@@ -40,7 +42,6 @@ public class Password {
 
 	public void setId(Integer id) {
 		this.id = id;
-
 	}
 
 	public String getName() {

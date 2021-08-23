@@ -1,4 +1,4 @@
-package com.gabrielle.passwordSafe.security.services;
+package com.gabrielle.passwordSafe.encryption;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

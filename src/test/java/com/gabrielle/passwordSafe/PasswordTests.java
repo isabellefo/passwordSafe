@@ -3,14 +3,10 @@ package com.gabrielle.passwordSafe;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.controllers.PasswordController;
 import com.gabrielle.passwordSafe.passwords.controllers.PasswordDTO;
-import com.gabrielle.passwordSafe.security.services.SecurityService;
+import com.gabrielle.passwordSafe.encryption.SecurityService;
 import com.gabrielle.passwordSafe.users.User;
-import com.gabrielle.passwordSafe.users.controllers.UserDTO;
-import com.gabrielle.passwordSafe.users.controllers.UsersController;
+import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.services.UserManagementService;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,8 +39,11 @@ public class PasswordTests {
     void contextLoads() {}
 
     void createUser() {
-        userTest = new User("test", "teste@gmail.com", "123456");
-        userService.createUser(userTest);
+        Password pwd = new Password();
+        pwd.setPassword("qwerty");
+        pwd.setName("name");
+        UserCreationDTO dto = new UserCreationDTO("test", "teste@gmail.com", "123456", pwd);
+        userTest = userService.createUser(dto);
     }
 
     private Password getTestPassword() {

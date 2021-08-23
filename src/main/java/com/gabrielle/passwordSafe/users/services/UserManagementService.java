@@ -1,7 +1,10 @@
 package com.gabrielle.passwordSafe.users.services;
 
-import com.gabrielle.passwordSafe.security.services.ISecurityService;
+import com.gabrielle.passwordSafe.encryption.ISecurityService;
+import com.gabrielle.passwordSafe.passwords.Password;
+import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
 import com.gabrielle.passwordSafe.users.User;
+import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,23 +20,33 @@ public class UserManagementService implements IUserManagementService {
     @Autowired
     ISecurityService securityService;
 
+    @Autowired
+    IPasswordManagementService passwordService;
+
     @Transactional
     @Override
-    public Integer createUser(User user) {
-        boolean userExists = isUserRegistered(user);
-        if(userExists || !user.isValid()) {
-            return -1;
+    public User createUser(UserCreationDTO userDTO) {
+        boolean userExists = isUserRegistered(userDTO);
+        if(userExists || !userDTO.isValid()) {
+            return null;
         }
+
+        User user = User.create(userDTO);
 
         String hash = securityService.hashMasterPassword(user.getMasterPassword());
         user.setMasterPassword(hash);
 
         user = userRepository.save(user);
-        return user.getId();
+        userDTO.password.setUser(user);
+        Integer created = passwordService.createPassword(userDTO.password);
+        if (created > 0) {
+            return user;
+        }
+        return null;
     }
 
-    private boolean isUserRegistered(User userToBeSaved) {
-        return userRepository.findByEmail(userToBeSaved.getEmail()) != null;
+    private boolean isUserRegistered(UserCreationDTO userToBeSaved) {
+        return userRepository.findByEmail(userToBeSaved.email) != null;
     }
 
     @Override

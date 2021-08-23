@@ -2,13 +2,11 @@ package com.gabrielle.passwordSafe.users.controllers;
 
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.services.IUserManagementService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -18,11 +16,11 @@ public class UsersController {
     IUserManagementService userManagementService;
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Integer> saveUser(@RequestBody User user) {
+    public ResponseEntity<Integer> saveUser(@RequestBody UserCreationDTO userDTO) {
 
-        Integer userId = userManagementService.createUser(user);
-        if (userId > 0) {
-            return new ResponseEntity(userId, HttpStatus.CREATED);
+        User user = userManagementService.createUser(userDTO);
+        if (user != null) {
+            return new ResponseEntity(user.getId(), HttpStatus.CREATED);
         }
 
         return new ResponseEntity(-1, HttpStatus.BAD_REQUEST);

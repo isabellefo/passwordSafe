@@ -1,6 +1,8 @@
 package com.gabrielle.passwordSafe.users.controllers;
 
 import com.gabrielle.passwordSafe.users.User;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class UserDTO {
     public final String name;
@@ -12,7 +14,9 @@ public class UserDTO {
         this.email = email;
         this.master_password = master_password;
     }
-    public static UserDTO create(User user) {
+
+    @Contract("_ -> new")
+    public static @NotNull UserDTO create(User user) {
         return new UserDTO(user.getName(), user.getEmail(), user.getMasterPassword());
     }
 }

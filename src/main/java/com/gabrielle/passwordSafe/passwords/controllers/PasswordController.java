@@ -2,14 +2,22 @@ package com.gabrielle.passwordSafe.passwords.controllers;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.gabrielle.passwordSafe.passwords.Password;
-import com.gabrielle.passwordSafe.passwords.repositories.IPasswordRepository;
 import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
+import com.gabrielle.passwordSafe.users.User;
+import com.gabrielle.passwordSafe.users.controllers.UserDTO;
 
 @RestController
 @RequestMapping(value = "/password")
@@ -18,9 +26,6 @@ public class PasswordController {
 	
 	@Autowired
 	IPasswordManagementService passwordService;
-	
-	@Autowired
-	IPasswordRepository passwordRepository;
 	
 	@PostMapping(produces = "application/json")
 	public ResponseEntity<Integer> savePassword(@RequestBody Password password) {
@@ -42,10 +47,8 @@ public class PasswordController {
         return new ResponseEntity(PasswordDTO.create(password), HttpStatus.OK);
     }
     
-    @GetMapping(value = "/busca/{user}", produces = "application/json")
-    public List<Password> findPasswordbyUser(@PathVariable("user") String user) {
-        return passwordRepository.findByUserEmailOrName(user, user);
+    @GetMapping(value = "/user/{userId}", produces = "application/json")
+    public List<Password> findPasswordByUser(@PathVariable("user") Integer userId) {
+        return passwordService.findUserPasswords(userId);
     }
-	
-    
 }

@@ -1,4 +1,4 @@
-package com.gabrielle.passwordSafe.security.services;
+package com.gabrielle.passwordSafe.encryption;
 
 public interface ISecurityService {
     String hashMasterPassword(String masterPassword);

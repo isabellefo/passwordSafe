@@ -1,6 +1,8 @@
 package com.gabrielle.passwordSafe;
 
+import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.users.User;
+import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.controllers.UserDTO;
 import com.gabrielle.passwordSafe.users.controllers.UsersController;
 import org.junit.jupiter.api.Test;
@@ -22,8 +24,16 @@ public class UserTests {
     @Autowired
     UsersController usersController;
 
-    private User getTestUser() {
-        return  new User("nome", "email@email.com", "123456");
+    private UserCreationDTO getTestUser() {
+        return getTestUser("email@email.com");
+    }
+
+    private UserCreationDTO getTestUser(String email) {
+        Password password = new Password();
+        password.setName("email");
+        password.setPassword("qwerty");
+        return new UserCreationDTO("nome", email, "123456", password);
+
     }
 
     @Test
@@ -31,7 +41,7 @@ public class UserTests {
 
     @Test
     void  testUserCreationSuccess() {
-        User user = getTestUser();
+        UserCreationDTO user = getTestUser();
         ResponseEntity<Integer> response = usersController.saveUser(user);
         Integer savedUserId = response.getBody();
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
@@ -41,8 +51,7 @@ public class UserTests {
 
     @Test
     void testUserCreationFails() {
-        User user = getTestUser();
-        user.setEmail("other@email.com");
+        UserCreationDTO user = getTestUser("other@email.com");
         ResponseEntity<Integer> firstResp = usersController.saveUser(user);
         assertEquals(firstResp.getStatusCode(), HttpStatus.CREATED);
         ResponseEntity<Integer> secondResp = usersController.saveUser(user);
@@ -52,20 +61,23 @@ public class UserTests {
 
     @Test
     void testUserRetrieval() {
-        User user = getTestUser();
+        UserCreationDTO user = getTestUser();
         ResponseEntity<Integer> save = usersController.saveUser(user);
-        assertTrue(save.getBody() > 0);
-        ResponseEntity<UserDTO> res = usersController.findUser(user.getId());
+        Integer savedId = save.getBody();
+        assertTrue(savedId > 0);
+        ResponseEntity<UserDTO> res = usersController.findUser(savedId);
         UserDTO userDTO = res.getBody();
-        assertEquals(userDTO.name, user.getName());
+        assertEquals(userDTO.name, user.name);
     }
 
     @Test
     void testInvalidUser() {
-        User user = getTestUser();
-        user.setEmail(null);
-        user.setName(null);
-        user.setMasterPassword(null);
+        UserCreationDTO user = new UserCreationDTO(
+                null,
+                null,
+                null,
+                new Password()
+        );
         ResponseEntity<Integer> res = usersController.saveUser(user);
         assertEquals(res.getStatusCode(), HttpStatus.BAD_REQUEST);
         assertEquals(res.getBody(), -1);

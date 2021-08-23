@@ -1,6 +1,6 @@
 package com.gabrielle.passwordSafe;
 
-import com.gabrielle.passwordSafe.security.services.ISecurityService;
+import com.gabrielle.passwordSafe.encryption.ISecurityService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

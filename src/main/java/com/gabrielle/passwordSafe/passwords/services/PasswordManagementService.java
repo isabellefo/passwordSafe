@@ -3,13 +3,15 @@ package com.gabrielle.passwordSafe.passwords.services;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import com.gabrielle.passwordSafe.encryption.SecurityService;
 import org.springframework.stereotype.Service;
 
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.repositories.IPasswordRepository;
-import com.gabrielle.passwordSafe.security.services.SecurityService;
+
+import java.util.List;
+
 
 @Service("passwordService")
 public class PasswordManagementService implements IPasswordManagementService{
@@ -38,6 +40,11 @@ public class PasswordManagementService implements IPasswordManagementService{
 	@Override
 	public Password findPassword(Integer passwordId) {
 		return passwordRepository.findById(passwordId);
+	}
+
+	@Override
+	public List<Password> findUserPasswords(Integer userId) {
+		return passwordRepository.findByUserId(userId);
 	}
 
 }
