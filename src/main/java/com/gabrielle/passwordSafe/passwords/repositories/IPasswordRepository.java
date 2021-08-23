@@ -8,6 +8,6 @@ import com.gabrielle.passwordSafe.passwords.Password;
 
 public interface IPasswordRepository extends JpaRepository<Password, Long> {
     Password findById(Integer id);
-    Password findByName(String name);
+    Password findByUserIdAndName(Integer userId, String name);
     List<Password> findByUserId(Integer userId);
 }

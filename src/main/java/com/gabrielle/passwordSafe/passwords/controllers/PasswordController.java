@@ -1,5 +1,6 @@
 package com.gabrielle.passwordSafe.passwords.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,12 @@ public class PasswordController {
     }
     
     @GetMapping(value = "/user/{userId}", produces = "application/json")
-    public List<Password> findPasswordByUser(@PathVariable("user") Integer userId) {
-        return passwordService.findUserPasswords(userId);
+    public ResponseEntity<List<PasswordDTO>> findPasswordByUser(@PathVariable("userId") Integer userId) {
+        List<Password> passwords = passwordService.findUserPasswords(userId);
+        List<PasswordDTO> dtos = new ArrayList<>();
+        for(Password pwd : passwords) {
+            dtos.add(PasswordDTO.create(pwd));
+        }
+        return new ResponseEntity<List<PasswordDTO>>(dtos, HttpStatus.OK);
     }
 }

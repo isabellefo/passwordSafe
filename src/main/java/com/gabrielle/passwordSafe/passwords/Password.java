@@ -23,7 +23,7 @@ public class Password {
 	@Column(name = "usr_id", insertable = false, updatable = false)
     private Integer userId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id")
     private User user;
     
@@ -71,5 +71,8 @@ public class Password {
 	public boolean isValid() {
         return name != null && password != null;
     }
-    	
+
+	public Integer getUserId() {
+    	return userId;
+	}
 }

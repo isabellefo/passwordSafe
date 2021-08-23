@@ -47,4 +47,9 @@ public class PasswordManagementService implements IPasswordManagementService{
 		return passwordRepository.findByUserId(userId);
 	}
 
+	@Override
+	public Password findUserPassword(Integer userId, String passwordName) {
+		return passwordRepository.findByUserIdAndName(userId, passwordName);
+	}
+
 }

@@ -18,3 +18,4 @@ create table passwords (
     usr_id int not null,
     CONSTRAINT fk_user FOREIGN KEY(usr_id) REFERENCES users(usr_id) ON DELETE CASCADE
 );
+
