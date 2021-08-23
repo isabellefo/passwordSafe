@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface IPasswordManagementService {
 	Integer createPassword(Password password);
-	Password findPassword(Integer passwordId);
 	List<Password> findUserPasswords(Integer userId);
 	Password findUserPassword(Integer userId, String passwordName);
 }

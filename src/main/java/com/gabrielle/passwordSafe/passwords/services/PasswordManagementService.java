@@ -35,9 +35,7 @@ public class PasswordManagementService implements IPasswordManagementService{
 
         return passwordRepository.save(password).getId();
 	}
-	
 
-	@Override
 	public Password findPassword(Integer passwordId) {
 		return passwordRepository.findById(passwordId);
 	}
