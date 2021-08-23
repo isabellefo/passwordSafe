@@ -1,4 +1,4 @@
-# PASSWORD SAFE
+# PASSWORD SAFe
 Example spring +postgres application
 
 # SCRIPTS
