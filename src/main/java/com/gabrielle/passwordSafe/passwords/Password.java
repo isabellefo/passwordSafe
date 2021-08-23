@@ -6,7 +6,7 @@ import com.gabrielle.passwordSafe.users.User;
 
 
 @Entity
-@Table(name="password")
+@Table(name="passwords")
 public class Password {
 	
 	@Id

@@ -18,7 +18,7 @@ public class UsersController {
     IUserManagementService userManagementService;
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Integer> saveUser(@RequestBody User user) {
+    public ResponseEntity<Integer> saveUser(@RequestBody UserCreationDTO user) {
 
         Integer userId = userManagementService.createUser(user);
         if (userId > 0) {

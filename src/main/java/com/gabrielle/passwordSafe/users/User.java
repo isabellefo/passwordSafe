@@ -1,11 +1,13 @@
 package com.gabrielle.passwordSafe.users;
 
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import com.gabrielle.passwordSafe.passwords.Password;
+import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 
 @Entity
 @Table(name="users")
@@ -23,13 +25,22 @@ public class User {
 
     @Column(name = "usr_master_password")
     private String masterPassword;
-    
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    public Set<Password> passwords;
+
+    public static User create(UserCreationDTO userDTO) {
+        User user = new User(userDTO.name, userDTO.email,  userDTO.masterPassword);
+        user.passwords.add(userDTO.password);
+        return user;
+    }
     public User() {}
 
     public User(String name,String  email,String  masterPassword) {
         this.name = name;
         this.email = email;
         this.masterPassword = masterPassword;
+        this.passwords = new HashSet<>();
     }
 
     public Integer getId() {
@@ -62,9 +73,5 @@ public class User {
 
     public void setMasterPassword(String masterPassword) {
         this.masterPassword = masterPassword;
-    }
-
-    public boolean isValid() {
-        return name != null && email != null && masterPassword != null;
     }
 }
