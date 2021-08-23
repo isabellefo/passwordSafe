@@ -44,7 +44,7 @@ public class PasswordController {
     
     @GetMapping(value = "/busca/{user}", produces = "application/json")
     public List<Password> findPasswordbyUser(@PathVariable("user") String user) {
-        return passwordRepository.findByUserEmail(user);
+        return passwordRepository.findByUserEmailOrName(user, user);
     }
 	
     

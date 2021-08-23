@@ -9,5 +9,5 @@ import com.gabrielle.passwordSafe.passwords.Password;
 
 public interface IPasswordRepository extends JpaRepository<Password, Long> {
     Password findById(Integer id);
-    List<Password> findByUserEmail(String email);
+    List<Password> findByUserEmailOrName(String email, String name);
 }
