@@ -1,7 +1,12 @@
 package com.gabrielle.passwordSafe.users;
 
 
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
+
+import com.gabrielle.passwordSafe.passwords.Password;
 
 @Entity
 @Table(name="users")
@@ -19,10 +24,13 @@ public class User {
 
     @Column(name = "usr_master_password")
     private String masterPassword;
-
+    
+    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    //private List<Password> password;
+    
     public User() {}
 
-    public User(String name,String  email,String  masterPassword) {
+    public User(String name, String email, String masterPassword) {
         this.name = name;
         this.email = email;
         this.masterPassword = masterPassword;
