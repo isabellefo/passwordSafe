@@ -1,6 +1,7 @@
 package com.gabrielle.passwordSafe.users;
 
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class User {
 
     @Column(name = "usr_master_password")
     private String masterPassword;
+    
+    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    //private List<Password> password;
     
     public User() {}
 
