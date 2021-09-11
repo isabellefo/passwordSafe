@@ -5,8 +5,10 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
+import com.gabrielle.passwordSafe.users.controllers.View;
 
 @Entity
 @Table(name="users")
@@ -14,15 +16,19 @@ public class User {
     @Id
     @Column(name = "usr_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({ View.User.class })
     private Integer id;
 
     @Column(name = "usr_name")
+    @JsonView({ View.User.class })
     private String name;
 
     @Column(name = "usr_email")
+    @JsonView({ View.User.class })
     private String email;
 
     @Column(name = "usr_master_password")
+    @JsonView(View.User.class)
     private String masterPassword;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")

@@ -1,7 +1,9 @@
 package com.gabrielle.passwordSafe.users.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.controllers.PasswordDTO;
+import com.gabrielle.passwordSafe.passwords.controllers.View;
 import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.services.IUserManagementService;
@@ -17,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/users/{userId}/password")
 @CrossOrigin
-public class PasswordController {
+public class PasswordsController {
     @Autowired
     IUserManagementService userManagementService;
 
@@ -26,12 +28,17 @@ public class PasswordController {
 
     @PostMapping(value = "")
     public Integer addPassword(@PathVariable("userId") Integer userId, @RequestBody Password password) {
-        User user = userManagementService.findUser(userId);
-        if(user != null) {
-            password.setUser(user);
-            return passwordManagementService.createPassword(password);
+        password = userManagementService.addPassword(userId, password);
+        if(password != null) {
+            return password.getId();
         }
         return -1;
+    }
+
+    @PutMapping(value = "")
+    public ResponseEntity<HttpStatus> updatePassword(@PathVariable("userId") Integer userId, @RequestBody Password password) {
+        passwordManagementService.updatePassword(userId, password);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(value = "", produces = "application/json")
@@ -45,11 +52,25 @@ public class PasswordController {
     }
 
     @GetMapping(value = "/{passwordName}", produces = "application/json")
-    public ResponseEntity<PasswordDTO> findPasswordByUser(
+    @JsonView(View.Password.class)
+    public ResponseEntity<Password> findPasswordByUser(
             @PathVariable("userId") Integer userId,
             @PathVariable("passwordName") String passwordName
     ) {
         Password pwd = passwordManagementService.findUserPassword(userId, passwordName);
-        return new ResponseEntity<PasswordDTO>(PasswordDTO.create(pwd), HttpStatus.OK);
+        return new ResponseEntity<Password>(pwd, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{passwordName}", produces = "application/json")
+    public ResponseEntity delete(
+            @PathVariable("userId") Integer userId,
+            @PathVariable("passwordName") String passwordName
+    ) {
+        try {
+            passwordManagementService.delete(userId, passwordName);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 }

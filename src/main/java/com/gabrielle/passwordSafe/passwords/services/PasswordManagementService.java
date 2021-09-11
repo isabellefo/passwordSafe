@@ -50,4 +50,19 @@ public class PasswordManagementService implements IPasswordManagementService{
 		return passwordRepository.findByUserIdAndName(userId, passwordName);
 	}
 
+	@Override
+	public Password updatePassword(Integer userId, Password password) {
+		Password savedPassword = passwordRepository.findById(password.getId());
+		if (savedPassword != null) {
+			password.setUser(savedPassword.getUser());
+			createPassword(password);
+		}
+		return null;
+	}
+
+	@Override
+	public void delete(Integer userId, String passwordName) {
+		Password pwd = findUserPassword(userId, passwordName);
+		passwordRepository.delete(pwd);
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Rollback
+@ActiveProfiles("test")
 public class UserTests {
     @Autowired
     UsersController usersController;
@@ -33,7 +35,6 @@ public class UserTests {
         password.setName("email");
         password.setPassword("qwerty");
         return new UserCreationDTO("nome", email, "123456", password);
-
     }
 
     @Test
@@ -51,10 +52,10 @@ public class UserTests {
 
     @Test
     void testUserCreationFails() {
-        UserCreationDTO user = getTestUser("other@email.com");
-        ResponseEntity<Integer> firstResp = usersController.saveUser(user);
+        UserCreationDTO dto = getTestUser("other@email.com");
+        ResponseEntity<Integer> firstResp = usersController.saveUser(dto);
         assertEquals(firstResp.getStatusCode(), HttpStatus.CREATED);
-        ResponseEntity<Integer> secondResp = usersController.saveUser(user);
+        ResponseEntity<Integer> secondResp = usersController.saveUser(dto);
         assertEquals(secondResp.getStatusCode(), HttpStatus.BAD_REQUEST);
         assertEquals(secondResp.getBody(),-1);
     }
@@ -65,9 +66,9 @@ public class UserTests {
         ResponseEntity<Integer> save = usersController.saveUser(user);
         Integer savedId = save.getBody();
         assertTrue(savedId > 0);
-        ResponseEntity<UserDTO> res = usersController.findUser(savedId);
-        UserDTO userDTO = res.getBody();
-        assertEquals(userDTO.name, user.name);
+        ResponseEntity<User> res = usersController.findUser(savedId);
+        User userRes = res.getBody();
+        assertEquals(userRes.getName(), user.name);
     }
 
     @Test

@@ -49,8 +49,19 @@ public class UserManagementService implements IUserManagementService {
         return userRepository.findByEmail(userToBeSaved.email) != null;
     }
 
+
     @Override
     public User findUser(@PathVariable Integer userId) {
         return userRepository.findById(userId);
+    }
+
+    @Override
+    public Password addPassword(Integer userId, Password password) {
+        User user = userRepository.findById(userId);
+        if(user != null) {
+            password.setUser(user);
+            passwordService.createPassword(password);
+        }
+        return password;
     }
 }

@@ -2,6 +2,8 @@ package com.gabrielle.passwordSafe.passwords;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.gabrielle.passwordSafe.passwords.controllers.View;
 import com.gabrielle.passwordSafe.users.User;
 
 
@@ -12,12 +14,15 @@ public class Password {
 	@Id
     @Column(name = "pwd_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(View.Password.class)
     private Integer id;
 
 	@Column(name = "pwd_name")
+	@JsonView(View.Password.class)
     private String name;
     
     @Column(name = "pwd_password")
+	@JsonView(View.Password.class)
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
