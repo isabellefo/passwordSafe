@@ -16,6 +16,21 @@ create table passwords (
     pwd_name varchar(63) not null,
     pwd_password varchar(63) not null,
     usr_id int not null,
-    CONSTRAINT fk_user FOREIGN KEY(usr_id) REFERENCES users(usr_id) ON DELETE CASCADE
+    CONSTRAINT fk_passwords_user FOREIGN KEY(usr_id) REFERENCES users(usr_id) ON DELETE CASCADE
 );
 
+drop table if exists roles;
+create table roles(
+    rol_id serial primary key,
+    rol_name text,
+    rol_description text
+);
+
+drop table if exists users_roles;
+create table users_roles(
+    rol_id int,
+    usr_id int,
+    primary key(rol_id, usr_id),
+    CONSTRAINT fk_roles_user FOREIGN KEY(usr_id) REFERENCES users(usr_id) ON DELETE CASCADE,
+    CONSTRAINT fk_roles_role FOREIGN KEY(rol_id) REFERENCES roles(rol_id) ON DELETE CASCADE
+);
