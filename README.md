@@ -1,5 +1,5 @@
 # PASSWORD SAFE
-Example spring + postgres application
+Example spring + postgres application.
 
 # SCRIPTS
 run source cli.sh. Then run functions as commands
