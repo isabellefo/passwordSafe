@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gabrielle.passwordSafe.encryption.SecurityService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.gabrielle.passwordSafe.passwords.Password;
@@ -41,6 +42,7 @@ public class PasswordManagementService implements IPasswordManagementService{
 	}
 
 	@Override
+	@PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 	public List<Password> findUserPasswords(Integer userId) {
 		return passwordRepository.findByUserId(userId);
 	}

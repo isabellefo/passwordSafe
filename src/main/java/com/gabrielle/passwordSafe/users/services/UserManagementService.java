@@ -7,6 +7,7 @@ import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -56,6 +57,7 @@ public class UserManagementService implements IUserManagementService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
     public Password addPassword(Integer userId, Password password) {
         User user = userRepository.findById(userId);
         if(user != null) {

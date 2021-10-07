@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @ActiveProfiles("test")
 public class PasswordTests {
+    //testar controller pela requisicao https://www.baeldung.com/spring-boot-testing
     @Autowired
     PasswordsController passwordsController;
 

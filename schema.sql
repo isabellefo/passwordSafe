@@ -3,7 +3,7 @@ create table users (
     usr_id serial primary key,
     usr_name varchar(255) not null,
     usr_email varchar(125) not null,
-    usr_master_password varchar(63) not null,
+    usr_master_password varchar(125) not null,
     constraint UQ_USERS_EMAIL unique (usr_email)
 );
 

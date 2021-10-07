@@ -39,6 +39,7 @@ public class User {
         user.passwords.add(userDTO.password);
         return user;
     }
+
     public User() {}
 
     public User(String name, String email, String masterPassword) {
