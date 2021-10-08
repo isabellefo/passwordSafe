@@ -3,6 +3,7 @@ package com.gabrielle.passwordSafe.users.services;
 import com.gabrielle.passwordSafe.encryption.ISecurityService;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
+import com.gabrielle.passwordSafe.users.Role;
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.repositories.IUserRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 
 @Service("userManagementService")
 public class UserManagementService implements IUserManagementService {
@@ -57,7 +59,7 @@ public class UserManagementService implements IUserManagementService {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public Password addPassword(Integer userId, Password password) {
         User user = userRepository.findById(userId);
         if(user != null) {

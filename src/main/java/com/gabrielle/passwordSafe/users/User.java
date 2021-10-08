@@ -2,8 +2,19 @@ package com.gabrielle.passwordSafe.users;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gabrielle.passwordSafe.passwords.Password;
@@ -34,9 +45,19 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     public Set<Password> passwords;
 
+    @JsonView(View.User.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = {@JoinColumn(name = "rol_id")},
+        inverseJoinColumns = {@JoinColumn(name = "usr_id")}
+    )
+    private Set<Role> roles;
+
     public static User create(UserCreationDTO userDTO) {
         User user = new User(userDTO.name, userDTO.email,  userDTO.masterPassword);
         user.passwords.add(userDTO.password);
+        user.roles = new HashSet<Role>(){{ add(new Role(2)); }};
         return user;
     }
 
@@ -79,5 +100,21 @@ public class User {
 
     public void setMasterPassword(String masterPassword) {
         this.masterPassword = masterPassword;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public String[] getRoleNames() {
+        return roles
+            .stream()
+            .map(Role::getName)
+            .collect(Collectors.toList())
+            .toArray(new String[roles.size()]);
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

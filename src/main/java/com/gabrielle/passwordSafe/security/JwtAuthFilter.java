@@ -25,6 +25,7 @@ public class JwtAuthFilter extends GenericFilterBean {
             String authorization = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorization != null) {
                 Authentication credentials = JwtUtils.parseToken(authorization.replaceAll("Bearer ", ""));
+                System.out.println("[credentials] " + credentials.getCredentials());
                 SecurityContextHolder.getContext().setAuthentication(credentials);
             }
             chain.doFilter(request, response);
