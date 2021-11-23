@@ -35,5 +35,5 @@ create table users_roles(
     CONSTRAINT fk_roles_role FOREIGN KEY(rol_id) REFERENCES roles(rol_id) ON DELETE CASCADE
 );
 
-insert into roles values (1, "ROLE_ADMIN", "Platform administrator"), (2, "ROLE_USER", "Platform user");
+insert into roles values (1, 'ROLE_ADMIN', 'Platform administrator'), (2, 'ROLE_USER', 'Platform user');
 insert into users_roles values (1, 1);
