@@ -3,20 +3,22 @@ package com.gabrielle.passwordSafe.users.services;
 import com.gabrielle.passwordSafe.encryption.ISecurityService;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
-import com.gabrielle.passwordSafe.users.Role;
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.repositories.IUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 
 @Service("userManagementService")
 public class UserManagementService implements IUserManagementService {
+    private static Logger logger = LoggerFactory.getLogger(UserManagementService.class);
+
     @Autowired
     IUserRepository userRepository;
 

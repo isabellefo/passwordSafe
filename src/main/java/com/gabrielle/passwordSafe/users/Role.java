@@ -17,7 +17,6 @@ public class Role {
 
     @Id
     @Column(name = "rol_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonView({ View.Role.class, View.User.class })

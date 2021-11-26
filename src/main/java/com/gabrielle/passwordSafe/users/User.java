@@ -49,15 +49,16 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_roles",
-        joinColumns = {@JoinColumn(name = "rol_id")},
-        inverseJoinColumns = {@JoinColumn(name = "usr_id")}
+        joinColumns = {@JoinColumn(name = "usr_id")},
+        inverseJoinColumns = {@JoinColumn(name = "rol_id")}
     )
     private Set<Role> roles;
 
     public static User create(UserCreationDTO userDTO) {
         User user = new User(userDTO.name, userDTO.email,  userDTO.masterPassword);
         user.passwords.add(userDTO.password);
-        user.roles = new HashSet<Role>(){{ add(new Role(2)); }};
+        Role role = new Role(2);
+        user.roles = new HashSet<Role>(){{ add(role); }};
         return user;
     }
 
