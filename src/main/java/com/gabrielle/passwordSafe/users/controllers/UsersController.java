@@ -10,8 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-
 @RestController
 @RequestMapping(value = "/users")
 @CrossOrigin
@@ -29,7 +27,7 @@ public class UsersController {
     }
 
     @GetMapping("/me")
-    @JsonView({View.User.class})
+    @JsonView({UserView.User.class})
     public ResponseEntity<User> findMe() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getName());
@@ -38,7 +36,7 @@ public class UsersController {
     }
 
     @GetMapping(value = "/{userId}", produces = "application/json")
-    @JsonView({View.User.class})
+    @JsonView({UserView.User.class})
     public ResponseEntity<User> findUser(@PathVariable() Integer userId) {
         User user = userManagementService.findUser(userId);
         if(user == null) {

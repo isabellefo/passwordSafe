@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
-import com.gabrielle.passwordSafe.users.controllers.View;
+import com.gabrielle.passwordSafe.users.controllers.UserView;
 
 @Entity
 @Table(name="users")
@@ -27,25 +27,26 @@ public class User {
     @Id
     @Column(name = "usr_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ View.User.class })
+    @JsonView({ UserView.User.class })
     private Integer id;
 
     @Column(name = "usr_name")
-    @JsonView({ View.User.class })
+    @JsonView({ UserView.User.class })
     private String name;
 
     @Column(name = "usr_email")
-    @JsonView({ View.User.class })
+    @JsonView({ UserView.User.class })
     private String email;
 
     @Column(name = "usr_master_password")
-    @JsonView(View.User.class)
+    @JsonView(UserView.User.class)
     private String masterPassword;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonView({ UserView.User.class })
     public Set<Password> passwords;
 
-    @JsonView(View.User.class)
+    @JsonView(UserView.User.class)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_roles",
