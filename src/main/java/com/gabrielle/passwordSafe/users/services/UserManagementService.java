@@ -70,4 +70,9 @@ public class UserManagementService implements IUserManagementService {
         }
         return password;
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

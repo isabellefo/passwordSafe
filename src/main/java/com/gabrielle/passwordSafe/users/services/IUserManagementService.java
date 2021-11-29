@@ -9,6 +9,6 @@ public interface IUserManagementService {
     User createUser(UserCreationDTO user);
     User findUser(Integer userId);
     Password addPassword(Integer userId, Password password);
-
+    User findUserByEmail(String name);
 }
 
