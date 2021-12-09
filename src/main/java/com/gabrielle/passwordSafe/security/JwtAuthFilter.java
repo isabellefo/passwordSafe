@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -25,13 +26,11 @@ public class JwtAuthFilter extends GenericFilterBean {
             String authorization = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorization != null) {
                 Authentication credentials = JwtUtils.parseToken(authorization.replaceAll("Bearer ", ""));
-                System.out.println("[credentials] " + credentials.getCredentials());
                 SecurityContextHolder.getContext().setAuthentication(credentials);
             }
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (AuthenticationException t) {
             HttpServletResponse servletResponse = (HttpServletResponse) response;
-            System.out.println("[teste] "+  t.getMessage());
             servletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, t.getMessage());
         }
     }

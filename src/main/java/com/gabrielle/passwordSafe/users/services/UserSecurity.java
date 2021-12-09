@@ -1,16 +1,12 @@
 package com.gabrielle.passwordSafe.users.services;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.Role;
-import com.gabrielle.passwordSafe.users.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service("userSecurity")

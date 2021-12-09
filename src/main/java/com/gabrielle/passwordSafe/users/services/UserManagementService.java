@@ -4,8 +4,8 @@ import com.gabrielle.passwordSafe.encryption.ISecurityService;
 import com.gabrielle.passwordSafe.passwords.Password;
 import com.gabrielle.passwordSafe.passwords.services.IPasswordManagementService;
 import com.gabrielle.passwordSafe.users.User;
+import com.gabrielle.passwordSafe.users.controllers.SubUserDTO;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
-import com.gabrielle.passwordSafe.users.repositories.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.List;
 
 @Service("userManagementService")
 public class UserManagementService implements IUserManagementService {
@@ -54,10 +56,33 @@ public class UserManagementService implements IUserManagementService {
         return userRepository.findByEmail(userToBeSaved.email) != null;
     }
 
+    private boolean isUserRegistered(SubUserDTO userToBeSaved) {
+        return userRepository.findByEmail(userToBeSaved.email) != null;
+    }
+
+    public User createSubUser(Integer adminId, SubUserDTO dto) {
+        User admin = userRepository.findById(adminId);
+        if(isUserRegistered(dto)) {
+            return null;
+        }
+        User sub = userRepository.save(User.createSub(dto, admin));
+        return sub;
+    }
 
     @Override
-    public User findUser(@PathVariable Integer userId) {
-        return userRepository.findById(userId);
+    public User findUser(Integer userId) {
+        User user = userRepository.findById(userId);
+        if(user.getAdmin() != null) {
+            List<Password> pwds = passwordService.findUserPasswords(user.getAdmin().getId());
+            user.setPasswords(new HashSet<>(pwds));
+            user.setAdmin(userRepository.findById(user.getAdmin().getId()));
+        }
+        return user;
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override

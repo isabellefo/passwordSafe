@@ -42,7 +42,6 @@ public class PasswordManagementService implements IPasswordManagementService{
 	}
 
 	@Override
-	@PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
 	public List<Password> findUserPasswords(Integer userId) {
 		return passwordRepository.findByUserId(userId);
 	}

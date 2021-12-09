@@ -1,4 +1,4 @@
-package com.gabrielle.passwordSafe.users.repositories;
+package com.gabrielle.passwordSafe.users.services;
 
 import com.gabrielle.passwordSafe.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;

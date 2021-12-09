@@ -4,20 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.gabrielle.passwordSafe.passwords.Password;
+import com.gabrielle.passwordSafe.users.controllers.SubUserDTO;
 import com.gabrielle.passwordSafe.users.controllers.UserCreationDTO;
 import com.gabrielle.passwordSafe.users.controllers.UserView;
 
@@ -39,10 +32,9 @@ public class User {
     private String email;
 
     @Column(name = "usr_master_password")
-    @JsonView(UserView.User.class)
     private String masterPassword;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonView({ UserView.User.class })
     public Set<Password> passwords;
 
@@ -55,11 +47,25 @@ public class User {
     )
     private Set<Role> roles;
 
+    @JsonView(UserView.User.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="usr_admin_id")
+    private User admin;
+
+    @Column(name="usr_login_tries")
+    public Integer loginTries;
+
     public static User create(UserCreationDTO userDTO) {
         User user = new User(userDTO.name, userDTO.email,  userDTO.masterPassword);
         user.passwords.add(userDTO.password);
-        Role role = new Role(2);
+        Role role = new Role(1);
         user.roles = new HashSet<Role>(){{ add(role); }};
+        return user;
+    }
+
+    public static User createSub(SubUserDTO dto, User admin) {
+        User user = new User(dto.name, dto.email, dto.masterPassword, admin);
+        user.roles = new HashSet<Role>(){{ add(new Role(2)); }};
         return user;
     }
 
@@ -70,6 +76,15 @@ public class User {
         this.email = email;
         this.masterPassword = masterPassword;
         this.passwords = new HashSet<>();
+    }
+
+    public User(String name, String email, String masterPassword, User admin) {
+        this.name = name;
+        this.email = email;
+        this.masterPassword = masterPassword;
+        this.passwords = new HashSet<>();
+        this.admin = admin;
+
     }
 
     public Integer getId() {
@@ -119,4 +134,12 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public User getAdmin() { return admin; }
+
+    public void setAdmin(User admin ) { this.admin = admin; }
+
+    public Set<Password> getPasswords() { return this.passwords; }
+
+    public void setPasswords(Set<Password> passwords) { this.passwords = passwords; }
 }

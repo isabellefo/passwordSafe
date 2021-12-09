@@ -2,13 +2,16 @@ package com.gabrielle.passwordSafe.passwords;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.gabrielle.passwordSafe.passwords.controllers.View;
 import com.gabrielle.passwordSafe.users.User;
 
 
 @Entity
 @Table(name="passwords")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Password {
 	
 	@Id

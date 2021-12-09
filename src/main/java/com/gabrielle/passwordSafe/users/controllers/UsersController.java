@@ -3,6 +3,7 @@ package com.gabrielle.passwordSafe.users.controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.services.IUserManagementService;
+import jdk.internal.loader.AbstractClassLoaderValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,18 @@ public class UsersController {
     @JsonView({UserView.User.class})
     public ResponseEntity<User> findMe() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getName());
         User user = userManagementService.findUserByEmail(auth.getName());
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/sub-user")
+    @JsonView({UserView.User.class})
+    public ResponseEntity<User> createSubUser(@PathVariable() Integer userId, @RequestBody SubUserDTO dto) {
+        User user = userManagementService.createSubUser(userId, dto);
+        if(user == null) {
+            return new ResponseEntity(-1, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(user.getId(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{userId}", produces = "application/json")
