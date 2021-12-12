@@ -6,7 +6,6 @@ import com.gabrielle.passwordSafe.security.Login;
 import com.gabrielle.passwordSafe.users.User;
 import com.gabrielle.passwordSafe.users.services.IUserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.config.RepositoryNameSpaceHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,12 +34,13 @@ public class LoginController {
     public ResponseEntity<Login> autenticar(@RequestBody Login login) throws JsonProcessingException {
         Authentication auth = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
         User user = userManagementService.findUserByEmail(auth.getName());
+        login.setPassword(null);
+        login.setName(user.getName());
         try {
-            if(user.loginTries >= 5) {
+            if(user.loginTries >= 3) {
                 return new ResponseEntity(HttpStatus.UNAUTHORIZED);
             }
             auth = authManager.authenticate(auth);
-            login.setPassword(null);
             login.setToken(JwtUtils.generateToken(auth));
             user.loginTries = 0;
             userManagementService.save(user);
@@ -48,7 +48,8 @@ public class LoginController {
         } catch (AuthenticationException e) {
             user.loginTries++;
             userManagementService.save(user);
-            throw e;
+            login.setErrors(user.loginTries);
+            return new ResponseEntity(login, HttpStatus.FORBIDDEN);
         }
     }
 

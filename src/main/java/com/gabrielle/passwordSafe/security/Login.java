@@ -2,6 +2,10 @@ package com.gabrielle.passwordSafe.security;
 
 public class Login {
 
+    private String name;
+
+    private Integer errors;
+
     private String username;
 
     private String password;
@@ -12,6 +16,22 @@ public class Login {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Integer errors) {
+        this.errors = errors;
     }
 
     public void setUsername(String username) {
