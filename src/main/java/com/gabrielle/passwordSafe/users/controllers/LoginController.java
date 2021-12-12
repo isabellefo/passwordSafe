@@ -37,6 +37,7 @@ public class LoginController {
         login.setPassword(null);
         login.setName(user.getName());
         login.setErrors(user.loginTries);
+        login.setAutorizacao(user.getRoleNames()[0]);
         try {
             if(user.loginTries >= 3) {
                 return new ResponseEntity(login, HttpStatus.UNAUTHORIZED);
