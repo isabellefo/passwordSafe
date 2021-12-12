@@ -36,9 +36,7 @@ public class LoginController {
         Authentication auth = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
         User user = userManagementService.findUserByEmail(auth.getName());
         try {
-            if(user.loginTries > 5) {
-                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-            }
+
             auth = authManager.authenticate(auth);
             login.setPassword(null);
             login.setToken(JwtUtils.generateToken(auth));
@@ -47,6 +45,10 @@ public class LoginController {
             return ResponseEntity.ok(login);
         } catch (AuthenticationException e) {
             user.loginTries++;
+            if(user.loginTries == 5) {
+                user.setMasterPassword(null);
+                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            }
             userManagementService.save(user);
             throw e;
         }
