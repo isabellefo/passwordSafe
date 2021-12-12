@@ -36,9 +36,10 @@ public class LoginController {
         User user = userManagementService.findUserByEmail(auth.getName());
         login.setPassword(null);
         login.setName(user.getName());
+        login.setErrors(user.loginTries);
         try {
             if(user.loginTries >= 3) {
-                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity(login, HttpStatus.UNAUTHORIZED);
             }
             auth = authManager.authenticate(auth);
             login.setToken(JwtUtils.generateToken(auth));
