@@ -76,6 +76,7 @@ public class User {
         this.email = email;
         this.masterPassword = masterPassword;
         this.passwords = new HashSet<>();
+        this.loginTries = 0;
     }
 
     public User(String name, String email, String masterPassword, User admin) {
@@ -84,7 +85,7 @@ public class User {
         this.masterPassword = masterPassword;
         this.passwords = new HashSet<>();
         this.admin = admin;
-
+        this.loginTries = 0;
     }
 
     public Integer getId() {

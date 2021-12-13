@@ -65,7 +65,10 @@ public class UserManagementService implements IUserManagementService {
         if(isUserRegistered(dto)) {
             return null;
         }
-        User sub = userRepository.save(User.createSub(dto, admin));
+        User user = User.createSub(dto, admin);
+        String hash = securityService.hashMasterPassword(user.getMasterPassword());
+        user.setMasterPassword(hash);
+        User sub = userRepository.save(user);
         return sub;
     }
 
